@@ -8,7 +8,7 @@ $ docker-compose up -d
 ```
 
 ### 数据库创建
-使用 `mysql` 管理工具，访问 `127.0.0.1:3306`，用户名：`root`，密码：`123456`，创建数据库 `mall`，创建数据表 `user`，`product`，`order`，`pay`，`sql` 语句参加教程或者目录`code/mall`下。
+使用 `mysql` 管理工具，访问 `127.0.0.1:3306`，用户名：`root`，密码：`123456`，创建数据库 `mall`，创建数据表 `user`，`product`，`order`，`pay`，`sql` 语句参见教程或者目录`code/mall`下。
 
 ### 项目启动
 进入`golang`容器，根据教程启动所有服务。
