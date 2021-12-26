@@ -1,0 +1,63 @@
+type (
+	// 产品创建
+	CreateRequest {
+		Name   string `json:"name"`
+		Desc   string `json:"desc"`
+		Amount int64  `json:"amount"`
+		Status int64  `json:"status"`
+	}
+	CreateResponse {
+		Id int64 `json:"id"`
+	}
+	// 产品创建
+
+	// 产品修改
+	UpdateRequest {
+		Id     int64  `json:"id"`
+		Name   string `json:"name,optional"`
+		Desc   string `json:"desc,optional"`
+		Amount int64  `json:"amount,optional"`
+		Status int64  `json:"status,optional"`
+	}
+	UpdateResponse {
+	}
+	// 产品修改
+
+	// 产品删除
+	RemoveRequest {
+		Id int64 `json:"id"`
+	}
+	RemoveResponse {
+	}
+	// 产品删除
+
+	// 产品详情
+	DetailRequest {
+		Id int64 `json:"id"`
+	}
+	DetailResponse {
+		Id     int64  `json:"id"`
+		Name   string `json:"name"`
+		Desc   string `json:"desc"`
+		Amount int64  `json:"amount"`
+		Status int64  `json:"status"`
+	}
+	// 产品详情
+)
+
+@server(
+	jwt: Auth
+)
+service Product {
+	@handler Create
+	post /api/product/create(CreateRequest) returns (CreateResponse)
+	
+	@handler Update
+	post /api/product/update(UpdateRequest) returns (UpdateResponse)
+	
+	@handler Remove
+	post /api/product/remove(RemoveRequest) returns (RemoveResponse)
+	
+	@handler Detail
+	post /api/product/detail(DetailRequest) returns (DetailResponse)
+}

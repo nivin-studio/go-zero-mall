@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "product";
+
+// 产品创建
+message CreateRequest {
+    string Name = 1;
+    string Desc = 2;
+    int64 Amount = 3;
+    int64 Status = 4;
+}
+message CreateResponse {
+	int64 id = 1;
+}
+// 产品创建
+
+// 产品修改
+message UpdateRequest {
+    int64 id = 1;
+    string Name = 2;
+    string Desc = 3;
+    int64 Amount = 4;
+    int64 Status = 5;
+}
+message UpdateResponse {
+}
+// 产品修改
+
+// 产品删除
+message RemoveRequest {
+    int64 id = 1;
+}
+message RemoveResponse {
+}
+// 产品删除
+
+// 产品详情
+message DetailRequest {
+    int64 id = 1;
+}
+message DetailResponse {
+    int64 id = 1;
+    string Name = 2;
+    string Desc = 3;
+    int64 Amount = 4;
+    int64 Status = 5;
+}
+// 产品详情
+
+service Product {
+    rpc Create(CreateRequest) returns(CreateResponse);
+    rpc Update(UpdateRequest) returns(UpdateResponse);
+    rpc Remove(RemoveRequest) returns(RemoveResponse);
+    rpc Detail(DetailRequest) returns(DetailResponse);
+}

@@ -1,0 +1,141 @@
+version: '3.5'
+# 网络配置
+networks:
+  backend:
+    driver: ${NETWORKS_DRIVER}
+
+# 服务容器配置
+services:
+  golang:                                # 自定义容器名称
+    build:
+      context: ./golang                  # 指定构建使用的 Dockerfile 文件
+    environment:                         # 设置环境变量
+      - TZ=${TZ}
+    volumes:                             # 设置挂载目录
+      - ${CODE_PATH_HOST}:/usr/src/code  # 引用 .env 配置中 CODE_PATH_HOST 变量，将宿主机上代码存放的目录挂载到容器中 /usr/src/code 目录
+    ports:                               # 设置端口映射
+      - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+      - "8003:8003"
+      - "9000:9000"
+      - "9001:9001"
+      - "9002:9002"
+      - "9003:9003"
+    stdin_open: true                     # 打开标准输入，可以接受外部输入
+    tty: true
+    networks:
+      - backend
+    restart: always                      # 指定容器退出后的重启策略为始终重启
+
+  etcd:                                  # 自定义容器名称
+    build:
+      context: ./etcd                    # 指定构建使用的 Dockerfile 文件
+    environment:
+      - TZ=${TZ}
+      - ALLOW_NONE_AUTHENTICATION=yes
+    ports:                               # 设置端口映射
+      - "${ETCD_PORT}:2379"
+    networks:
+      - backend
+    restart: always
+
+  mysql:
+    build:
+      context: ./mysql
+    environment:
+      - TZ=${TZ}
+      - MYSQL_USER=${MYSQL_USERNAME}                  # 设置 Mysql 用户名称
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}              # 设置 Mysql 用户密码
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}    # 设置 Mysql root 用户密码
+    volumes:
+      - ${DATA_PATH_HOST}/mysql:/var/lib/mysql        # 引用 .env 配置中 DATA_PATH_HOST 变量，将宿主机上存放 Mysql 数据的目录挂载到容器中 /var/lib/mysql 目录
+    ports:
+      - "${MYSQL_PORT}:3306"                          # 设置容器3306端口映射指定宿主机端口
+    networks:
+      - backend
+    restart: always
+
+  redis:
+    build:
+      context: ./redis
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${DATA_PATH_HOST}/redis:/data                 # 引用 .env 配置中 DATA_PATH_HOST 变量，将宿主机上存放 Redis 数据的目录挂载到容器中 /data 目录
+    ports:
+      - "${REDIS_PORT}:6379"                          # 设置容器6379端口映射指定宿主机端口
+    networks:
+      - backend
+    restart: always
+
+  mysql-manage:
+    build:
+      context: ./mysql-manage
+    environment:
+      - TZ=${TZ}
+      - PMA_ARBITRARY=1
+      - MYSQL_USER=${MYSQL_MANAGE_USERNAME}               # 设置连接的 Mysql 服务用户名称
+      - MYSQL_PASSWORD=${MYSQL_MANAGE_PASSWORD}           # 设置连接的 Mysql 服务用户密码
+      - MYSQL_ROOT_PASSWORD=${MYSQL_MANAGE_ROOT_PASSWORD} # 设置连接的 Mysql 服务 root 用户密码
+      - PMA_HOST=${MYSQL_MANAGE_CONNECT_HOST}             # 设置连接的 Mysql 服务 host，可以是 Mysql 服务容器的名称，也可以是 Mysql 服务容器的 ip 地址
+      - PMA_PORT=${MYSQL_MANAGE_CONNECT_PORT}             # 设置连接的 Mysql 服务端口号
+    ports:
+      - "${MYSQL_MANAGE_PORT}:80"                         # 设置容器80端口映射指定宿主机端口，用于宿主机访问可视化web
+    depends_on:                                           # 依赖容器
+      - mysql                                             # 在 Mysql 服务容器启动后启动
+    networks:
+      - backend
+    restart: always
+
+  redis-manage:
+    build:
+      context: ./redis-manage
+    environment:
+      - TZ=${TZ}
+      - ADMIN_USER=${REDIS_MANAGE_USERNAME}           # 设置 Redis 可视化管理的用户名称
+      - ADMIN_PASS=${REDIS_MANAGE_PASSWORD}           # 设置 Redis 可视化管理的用户密码
+      - REDIS_1_HOST=${REDIS_MANAGE_CONNECT_HOST}     # 设置连接的 Redis 服务 host，可以是 Redis 服务容器的名称，也可以是 Redis 服务容器的 ip 地址
+      - REDIS_1_PORT=${REDIS_MANAGE_CONNECT_PORT}     # 设置连接的 Redis 服务端口号
+    ports:
+      - "${REDIS_MANAGE_PORT}:80"                     # 设置容器80端口映射指定宿主机端口，用于宿主机访问可视化web
+    depends_on:                                       # 依赖容器
+      - redis                                         # 在 Redis 服务容器启动后启动
+    networks:
+      - backend
+    restart: always
+
+  prometheus:
+    build:
+      context: ./prometheus
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ./prometheus/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml  # 将 prometheus 配置文件挂载到容器里
+    ports:
+      - "${PROMETHEUS_PORT}:9090"                     # 设置容器9090端口映射指定宿主机端口，用于宿主机访问可视化web
+    networks:
+      - backend
+    restart: always
+
+  grafana:
+    build:
+      context: ./grafana
+    environment:
+      - TZ=${TZ}
+    ports:
+      - "${GRAFANA_PORT}:3000"                        # 设置容器3000端口映射指定宿主机端口，用于宿主机访问可视化web
+    networks:
+      - backend
+    restart: always
+
+  jaeger:
+    build:
+      context: ./jaeger
+    environment:
+      - TZ=${TZ}
+    ports:
+      - "${JAEGER_PORT}:16686"                        # 设置容器16686端口映射指定宿主机端口，用于宿主机访问可视化web
+    networks:
+      - backend
+    restart: always

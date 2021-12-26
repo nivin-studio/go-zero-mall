@@ -1,0 +1,52 @@
+type (
+	// 用户登录
+	LoginRequest {
+		Mobile   string `json:"mobile"`
+		Password string `json:"password"`
+	}
+	LoginResponse {
+		AccessToken  string `json:"accessToken"`
+		AccessExpire int64  `json:"accessExpire"`
+	}
+	// 用户登录
+
+	// 用户注册
+	RegisterRequest {
+		Name     string `json:"name"`
+		Gender   int64  `json:"gender"`
+		Mobile   string `json:"mobile"`
+		Password string `json:"password"`
+	}
+	RegisterResponse {
+		Id     int64  `json:"id"`
+		Name   string `json:"name"`
+		Gender int64  `json:"gender"`
+		Mobile string `json:"mobile"`
+	}
+	// 用户注册
+
+	// 用户信息
+	UserInfoResponse {
+		Id     int64  `json:"id"`
+		Name   string `json:"name"`
+		Gender int64  `json:"gender"`
+		Mobile string `json:"mobile"`
+	}
+	// 用户信息
+)
+
+service User {
+	@handler Login
+	post /api/user/login(LoginRequest) returns (LoginResponse)
+	
+	@handler Register
+	post /api/user/register(RegisterRequest) returns (RegisterResponse)
+}
+
+@server(
+	jwt: Auth
+)
+service User {
+	@handler UserInfo
+	post /api/user/userinfo() returns (UserInfoResponse)
+}
