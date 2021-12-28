@@ -37,11 +37,15 @@ func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, er
 	}
 
 	// 查询产品是否存在
-	_, err = l.svcCtx.ProductRpc.Detail(l.ctx, &product.DetailRequest{
+	productRes, err := l.svcCtx.ProductRpc.Detail(l.ctx, &product.DetailRequest{
 		Id: in.Pid,
 	})
 	if err != nil {
 		return nil, err
+	}
+	// 判断产品库存是否充足
+	if productRes.Stock <= 0 {
+		return nil, status.Error(500, "产品库存不足")
 	}
 
 	newOrder := model.Order{
@@ -59,6 +63,18 @@ func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, er
 	newOrder.Id, err = res.LastInsertId()
 	if err != nil {
 		return nil, status.Error(500, err.Error())
+	}
+
+	_, err = l.svcCtx.ProductRpc.Update(l.ctx, &product.UpdateRequest{
+		Id:     productRes.Id,
+		Name:   productRes.Name,
+		Desc:   productRes.Desc,
+		Amount: productRes.Amount,
+		Stock:  productRes.Stock - 1,
+		Status: productRes.Status,
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	return &order.CreateResponse{
