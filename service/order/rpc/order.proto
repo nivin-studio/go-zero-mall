@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package order;
+package orderclient;
 
 option go_package = "order";
 

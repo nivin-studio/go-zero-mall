@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package pay;
+package payclient;
 
 option go_package = "pay";
 
