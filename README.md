@@ -1,5 +1,5 @@
 # go-zero实战：让微服务Go起来
-这是一个 `go-zero` 入门学习教程的示例代码，教程地址：[o-zero实战：让微服务Go起来](https://juejin.cn/post/7036011047391592485)。
+这是一个 `go-zero` 入门学习教程的示例代码，教程地址：[go-zero实战：让微服务Go起来](https://juejin.cn/post/7036011047391592485)。
 
 ### docker 本地集成环境安装
 下载 [gonivinck](https://github.com/nivin-studio/gonivinck) docker-compose 集成环境。
