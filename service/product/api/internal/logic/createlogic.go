@@ -28,8 +28,8 @@ func (l *CreateLogic) Create(req types.CreateRequest) (resp *types.CreateRespons
 	res, err := l.svcCtx.ProductRpc.Create(l.ctx, &product.CreateRequest{
 		Name:   req.Name,
 		Desc:   req.Desc,
-		Amount: req.Amount,
 		Stock:  req.Stock,
+		Amount: req.Amount,
 		Status: req.Status,
 	})
 	if err != nil {

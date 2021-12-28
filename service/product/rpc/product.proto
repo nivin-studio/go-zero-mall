@@ -8,8 +8,8 @@ option go_package = "product";
 message CreateRequest {
     string Name = 1;
     string Desc = 2;
-    int64 Amount = 3;
-    int64 Stock = 4;
+    int64 Stock = 3;
+    int64 Amount = 4;
     int64 Status = 5;
 }
 message CreateResponse {
@@ -22,8 +22,8 @@ message UpdateRequest {
     int64 id = 1;
     string Name = 2;
     string Desc = 3;
-    int64 Amount = 4;
-    int64 Stock = 5;
+    int64 Stock = 4;
+    int64 Amount = 5;
     int64 Status = 6;
 }
 message UpdateResponse {
@@ -46,8 +46,8 @@ message DetailResponse {
     int64 id = 1;
     string Name = 2;
     string Desc = 3;
-    int64 Amount = 4;
-    int64 Stock = 5;
+    int64 Stock = 4;
+    int64 Amount = 5;
     int64 Status = 6;
 }
 // 产品详情

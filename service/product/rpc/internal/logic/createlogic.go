@@ -29,8 +29,8 @@ func (l *CreateLogic) Create(in *product.CreateRequest) (*product.CreateResponse
 	newProduct := model.Product{
 		Name:   in.Name,
 		Desc:   in.Desc,
-		Amount: in.Amount,
 		Stock:  in.Stock,
+		Amount: in.Amount,
 		Status: in.Status,
 	}
 

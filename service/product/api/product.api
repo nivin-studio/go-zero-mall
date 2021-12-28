@@ -3,8 +3,8 @@ type (
 	CreateRequest {
 		Name   string `json:"name"`
 		Desc   string `json:"desc"`
-		Amount int64  `json:"amount"`
 		Stock  int64  `json:"stock"`
+		Amount int64  `json:"amount"`
 		Status int64  `json:"status"`
 	}
 	CreateResponse {
@@ -17,8 +17,8 @@ type (
 		Id     int64  `json:"id"`
 		Name   string `json:"name,optional"`
 		Desc   string `json:"desc,optional"`
-		Amount int64  `json:"amount,optional"`
 		Stock  int64  `json:"stock"`
+		Amount int64  `json:"amount,optional"`
 		Status int64  `json:"status,optional"`
 	}
 	UpdateResponse {
@@ -41,8 +41,8 @@ type (
 		Id     int64  `json:"id"`
 		Name   string `json:"name"`
 		Desc   string `json:"desc"`
-		Amount int64  `json:"amount"`
 		Stock  int64  `json:"stock"`
+		Amount int64  `json:"amount"`
 		Status int64  `json:"status"`
 	}
 	// 产品详情

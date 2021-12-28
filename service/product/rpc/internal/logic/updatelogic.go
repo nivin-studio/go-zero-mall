@@ -41,11 +41,11 @@ func (l *UpdateLogic) Update(in *product.UpdateRequest) (*product.UpdateResponse
 	if in.Desc != "" {
 		res.Desc = in.Desc
 	}
-	if in.Amount != 0 {
-		res.Amount = in.Amount
-	}
 	if in.Stock != 0 {
 		res.Stock = in.Stock
+	}
+	if in.Amount != 0 {
+		res.Amount = in.Amount
 	}
 	if in.Status != 0 {
 		res.Status = in.Status

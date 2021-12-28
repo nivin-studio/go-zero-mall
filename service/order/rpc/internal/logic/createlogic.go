@@ -69,8 +69,8 @@ func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, er
 		Id:     productRes.Id,
 		Name:   productRes.Name,
 		Desc:   productRes.Desc,
-		Amount: productRes.Amount,
 		Stock:  productRes.Stock - 1,
+		Amount: productRes.Amount,
 		Status: productRes.Status,
 	})
 	if err != nil {

@@ -39,8 +39,8 @@ func (l *DetailLogic) Detail(in *product.DetailRequest) (*product.DetailResponse
 		Id:     res.Id,
 		Name:   res.Name,
 		Desc:   res.Desc,
-		Amount: res.Amount,
 		Stock:  res.Stock,
+		Amount: res.Amount,
 		Status: res.Status,
 	}, nil
 }
