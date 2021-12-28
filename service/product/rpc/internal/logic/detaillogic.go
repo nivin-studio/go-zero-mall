@@ -40,6 +40,7 @@ func (l *DetailLogic) Detail(in *product.DetailRequest) (*product.DetailResponse
 		Name:   res.Name,
 		Desc:   res.Desc,
 		Amount: res.Amount,
+		Stock:  res.Stock,
 		Status: res.Status,
 	}, nil
 }

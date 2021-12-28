@@ -30,6 +30,7 @@ func (l *CreateLogic) Create(in *product.CreateRequest) (*product.CreateResponse
 		Name:   in.Name,
 		Desc:   in.Desc,
 		Amount: in.Amount,
+		Stock:  in.Stock,
 		Status: in.Status,
 	}
 

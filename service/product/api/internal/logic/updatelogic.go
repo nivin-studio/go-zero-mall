@@ -30,6 +30,7 @@ func (l *UpdateLogic) Update(req types.UpdateRequest) (resp *types.UpdateRespons
 		Name:   req.Name,
 		Desc:   req.Desc,
 		Amount: req.Amount,
+		Stock:  req.Stock,
 		Status: req.Status,
 	})
 

@@ -40,6 +40,7 @@ type (
 		Name       string    `db:"name"`   // 产品名称
 		Desc       string    `db:"desc"`   // 产品描述
 		Amount     int64     `db:"amount"` // 产品金额
+		Stock      int64     `db:"stock"`  // 产品库存
 		Status     int64     `db:"status"` // 产品状态
 		CreateTime time.Time `db:"create_time"`
 		UpdateTime time.Time `db:"update_time"`
@@ -54,8 +55,8 @@ func NewProductModel(conn sqlx.SqlConn, c cache.CacheConf) ProductModel {
 }
 
 func (m *defaultProductModel) Insert(data *Product) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?)", m.table, productRowsExpectAutoSet)
-	ret, err := m.ExecNoCache(query, data.Name, data.Desc, data.Amount, data.Status)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?)", m.table, productRowsExpectAutoSet)
+	ret, err := m.ExecNoCache(query, data.Name, data.Desc, data.Amount, data.Stock, data.Status)
 
 	return ret, err
 }
@@ -81,7 +82,7 @@ func (m *defaultProductModel) Update(data *Product) error {
 	productIdKey := fmt.Sprintf("%s%v", cacheProductIdPrefix, data.Id)
 	_, err := m.Exec(func(conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, productRowsWithPlaceHolder)
-		return conn.Exec(query, data.Name, data.Desc, data.Amount, data.Status, data.Id)
+		return conn.Exec(query, data.Name, data.Desc, data.Amount, data.Stock, data.Status, data.Id)
 	}, productIdKey)
 	return err
 }

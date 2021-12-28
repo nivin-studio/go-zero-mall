@@ -29,6 +29,7 @@ func (l *CreateLogic) Create(req types.CreateRequest) (resp *types.CreateRespons
 		Name:   req.Name,
 		Desc:   req.Desc,
 		Amount: req.Amount,
+		Stock:  req.Stock,
 		Status: req.Status,
 	})
 	if err != nil {

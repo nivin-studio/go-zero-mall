@@ -5,6 +5,7 @@ type CreateRequest struct {
 	Name   string `json:"name"`
 	Desc   string `json:"desc"`
 	Amount int64  `json:"amount"`
+	Stock  int64  `json:"stock"`
 	Status int64  `json:"status"`
 }
 
@@ -17,6 +18,7 @@ type UpdateRequest struct {
 	Name   string `json:"name,optional"`
 	Desc   string `json:"desc,optional"`
 	Amount int64  `json:"amount,optional"`
+	Stock  int64  `json:"stock"`
 	Status int64  `json:"status,optional"`
 }
 
@@ -39,5 +41,6 @@ type DetailResponse struct {
 	Name   string `json:"name"`
 	Desc   string `json:"desc"`
 	Amount int64  `json:"amount"`
+	Stock  int64  `json:"stock"`
 	Status int64  `json:"status"`
 }
