@@ -32,7 +32,6 @@ $ docker exec -it gonivinck_golang_1 bash
 #### 3.2 使用 `nivin` 命令工具
 
 - nivin install
-
 安装项目依赖命令。
 
 ~~~bash
@@ -40,7 +39,6 @@ $ ./nivin install
 ~~~
 
 - nivin start [rpc|api] [service_name]
-
 服务启动命令，创建服务会话，并启动对应的服务。
     
 ~~~bash
@@ -52,7 +50,6 @@ $ ./nivin start api user
 ~~~
 
 - nivin stop [rpc|api] [service_name]
-
 服务暂停命令，删除对应的服务会话。
     
 ~~~bash
@@ -64,9 +61,8 @@ $ ./nivin stop api user
 ~~~
 
 - nivin info [rpc|api] [service_name]
-
 服务查看命令，可以进入服务对应的会话终端，查看运行日志。
-    
+
 ~~~bash
 $ ./nivin info rpc user
 ~~~
@@ -75,10 +71,9 @@ $ ./nivin info rpc user
 $ ./nivin info api user
 ~~~
 
-> 提示：使用 ctrl+a+d 组合快捷键，可以无损退出次会话，不会中止会话中运行的服务。
+> 提示：使用 ctrl+a+d 组合快捷键，可以无损退出此会话，不会中止会话中运行的服务。
 
 - nivin ls
-
 服务会话列表，查看启动的服务会话列表。
     
 ~~~bash
