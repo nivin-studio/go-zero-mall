@@ -23,13 +23,64 @@
 
 ### 3. 项目启动
 下载本项目，将项目代码放置 `gonivinck` 配置 `CODE_PATH_HOST` 指定的本机目录，进入 `golang` 容器，运行项目代码。
-- 进入 `golang` 容器
+
+#### 3.1 进入 `golang` 容器
 ~~~bash
 $ docker exec -it gonivinck_golang_1 bash
 ~~~
-- 容器中启动 `user rpc` 服务
+
+#### 3.2 使用 `nivin` 命令工具
+
+- nivin install
+
+    安装项目依赖命令。
+
 ~~~bash
-$ cd mall/service/user/rpc
-$ go run user.go -f etc/user.yaml
-Starting rpc server at 127.0.0.1:9000...
+$ ./nivin install
+~~~
+
+- nivin start [rpc|api] [service_name]
+
+    服务启动命令，创建服务会话，并启动对应的服务。
+    
+~~~bash
+$ ./nivin start rpc user
+~~~
+
+~~~bash
+$ ./nivin start api user
+~~~
+
+- nivin stop [rpc|api] [service_name]
+
+    服务暂停命令，删除对应的服务会话。
+    
+~~~bash
+$ ./nivin stop rpc user
+~~~
+
+~~~bash
+$ ./nivin stop api user
+~~~
+
+- nivin info [rpc|api] [service_name]
+
+    服务查看命令，可以进入服务对应的会话终端，查看运行日志。
+    
+~~~bash
+$ ./nivin info rpc user
+~~~
+
+~~~bash
+$ ./nivin info api user
+~~~
+
+> 提示：使用 ctrl+a+d 组合快捷键，可以无损退出次会话，不会中止会话中运行的服务。
+
+- nivin ls
+
+    服务会话列表，查看启动的服务会话列表。
+    
+~~~bash
+$ ./nivin ls
 ~~~
