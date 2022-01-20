@@ -1,11 +1,11 @@
-#fonts color
+#!/bin/bash
+
 Green="\033[32m"
 Red="\033[31m"
 GreenBG="\033[42;37m"
 RedBG="\033[41;37m"
 Font="\033[0m"
 
-#notification information
 OK="${Green}[OK]${Font}"
 Error="${Red}[错误]${Font}"
 
@@ -29,9 +29,12 @@ if [ $# -gt 0 ]; then
         screen -dmS $1$2
         screen -S $1$2 -p 0 -X stuff "$cmd"
         screen -ls
+        echo -e "${OK} ${GreenBG} $2 $1 服务已启动！ ${Font}"
     elif [[ "$1" == "stop" ]]; then
         shift 1
-         screen -S $1$2 -X quit
+        screen -S $1$2 -X quit
+        screen -ls
+        echo -e "${OK} ${GreenBG} $2 $1 服务已暂停！ ${Font}"
     elif [[ "$1" == "info" ]]; then
         shift 1
         screen -r $1$2
