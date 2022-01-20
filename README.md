@@ -22,7 +22,7 @@
 > 提示：如果你修改 gonivinck 相关 mysql 配置，请使用你修改的端口号，账号，密码连接访问数据库。
 
 ### 3. 项目启动
-下载本项目，将项目代码放置 `gonivinck` 配置 `CODE_PATH_HOST` 指定的本机目录，进入 golang 容器，运动项目代码。
+下载本项目，将项目代码放置 `gonivinck` 配置 `CODE_PATH_HOST` 指定的本机目录，进入 golang 容器，运行项目代码。
 - 进入 `golang` 容器
 ~~~bash
 $ docker exec -it gonivinck_golang_1 bash
