@@ -52,9 +52,20 @@ message DetailResponse {
 }
 // 产品详情
 
+// 减产品库存
+message DecrStockRequest {
+    int64 id = 1;
+    int64 num = 2;
+}
+message DecrStockResponse {
+}
+// 减产品库存
+
 service Product {
     rpc Create(CreateRequest) returns(CreateResponse);
     rpc Update(UpdateRequest) returns(UpdateResponse);
     rpc Remove(RemoveRequest) returns(RemoveResponse);
     rpc Detail(DetailRequest) returns(DetailResponse);
+    rpc DecrStock(DecrStockRequest) returns(DecrStockResponse);
+    rpc DecrStockRevert(DecrStockRequest) returns(DecrStockResponse);
 }

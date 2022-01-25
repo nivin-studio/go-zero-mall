@@ -28,6 +28,8 @@ type (
 		FindOne(id int64) (*Product, error)
 		Update(data *Product) error
 		Delete(id int64) error
+		RawDB() (*sql.DB, error)
+		TxUpdate(tx *sql.Tx, data *Product) error
 	}
 
 	defaultProductModel struct {
@@ -104,4 +106,17 @@ func (m *defaultProductModel) formatPrimary(primary interface{}) string {
 func (m *defaultProductModel) queryPrimary(conn sqlx.SqlConn, v, primary interface{}) error {
 	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", productRows, m.table)
 	return conn.QueryRow(v, query, primary)
+}
+
+func (m *defaultProductModel) RawDB() (*sql.DB, error) {
+	return m.CachedConn.RawDB()
+}
+
+func (m *defaultProductModel) TxUpdate(tx *sql.Tx, data *Product) error {
+	productIdKey := fmt.Sprintf("%s%v", cacheProductIdPrefix, data.Id)
+	_, err := m.Exec(func(conn sqlx.SqlConn) (result sql.Result, err error) {
+		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, productRowsWithPlaceHolder)
+		return tx.Exec(query, data.Name, data.Desc, data.Stock, data.Amount, data.Status, data.Id)
+	}, productIdKey)
+	return err
 }
