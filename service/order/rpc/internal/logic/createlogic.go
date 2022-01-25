@@ -2,14 +2,18 @@ package logic
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
 
 	"mall/service/order/model"
 	"mall/service/order/rpc/internal/svc"
 	"mall/service/order/rpc/order"
-	"mall/service/product/rpc/product"
 	"mall/service/user/rpc/user"
 
+	"github.com/dtm-labs/dtmcli"
+	"github.com/dtm-labs/dtmgrpc"
 	"github.com/tal-tech/go-zero/core/logx"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
@@ -28,56 +32,43 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogi
 }
 
 func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, error) {
-	// 查询用户是否存在
-	_, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
-		Id: in.Uid,
-	})
+	// 获取 RawDB
+	db, err := l.svcCtx.OrderModel.RawDB()
 	if err != nil {
-		return nil, err
+		return nil, status.Error(codes.Aborted, err.Error())
 	}
 
-	// 查询产品是否存在
-	productRes, err := l.svcCtx.ProductRpc.Detail(l.ctx, &product.DetailRequest{
-		Id: in.Pid,
-	})
+	// 获取 barrier，用于防止空补偿、空悬挂
+	barrier, err := dtmgrpc.BarrierFromGrpc(l.ctx)
 	if err != nil {
-		return nil, err
-	}
-	// 判断产品库存是否充足
-	if productRes.Stock <= 0 {
-		return nil, status.Error(500, "产品库存不足")
+		return nil, status.Error(codes.Aborted, err.Error())
 	}
 
-	newOrder := model.Order{
-		Uid:    in.Uid,
-		Pid:    in.Pid,
-		Amount: in.Amount,
-		Status: 0,
+	if err := barrier.CallWithDB(db, func(tx *sql.Tx) error {
+		// 查询用户是否存在
+		_, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
+			Id: in.Uid,
+		})
+		if err != nil {
+			return fmt.Errorf("用户不存在")
+		}
+
+		newOrder := model.Order{
+			Uid:    in.Uid,
+			Pid:    in.Pid,
+			Amount: in.Amount,
+			Status: 0,
+		}
+
+		_, err = l.svcCtx.OrderModel.TxInsert(tx, &newOrder)
+		if err != nil {
+			return fmt.Errorf("订单创建失败")
+		}
+
+		return nil
+	}); err != nil {
+		return nil, status.Error(codes.Aborted, dtmcli.ResultFailure)
 	}
 
-	res, err := l.svcCtx.OrderModel.Insert(&newOrder)
-	if err != nil {
-		return nil, status.Error(500, err.Error())
-	}
-
-	newOrder.Id, err = res.LastInsertId()
-	if err != nil {
-		return nil, status.Error(500, err.Error())
-	}
-
-	_, err = l.svcCtx.ProductRpc.Update(l.ctx, &product.UpdateRequest{
-		Id:     productRes.Id,
-		Name:   productRes.Name,
-		Desc:   productRes.Desc,
-		Stock:  productRes.Stock - 1,
-		Amount: productRes.Amount,
-		Status: productRes.Status,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	return &order.CreateResponse{
-		Id: newOrder.Id,
-	}, nil
+	return &order.CreateResponse{}, nil
 }

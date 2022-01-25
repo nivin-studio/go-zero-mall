@@ -29,6 +29,9 @@ type (
 		FindAllByUid(uid int64) ([]*Order, error)
 		Update(data *Order) error
 		Delete(id int64) error
+		RawDB() (*sql.DB, error)
+		TxInsert(tx *sql.Tx, data *Order) (sql.Result, error)
+		TxUpdate(tx *sql.Tx, data *Order) error
 	}
 
 	defaultOrderModel struct {
@@ -120,4 +123,24 @@ func (m *defaultOrderModel) formatPrimary(primary interface{}) string {
 func (m *defaultOrderModel) queryPrimary(conn sqlx.SqlConn, v, primary interface{}) error {
 	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", orderRows, m.table)
 	return conn.QueryRow(v, query, primary)
+}
+
+func (m *defaultOrderModel) RawDB() (*sql.DB, error) {
+	return m.CachedConn.RawDB()
+}
+
+func (m *defaultOrderModel) TxInsert(tx *sql.Tx, data *Order) (sql.Result, error) {
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?)", m.table, orderRowsExpectAutoSet)
+	ret, err := tx.Exec(query, data.Uid, data.Pid, data.Amount, data.Status)
+
+	return ret, err
+}
+
+func (m *defaultOrderModel) TxUpdate(tx *sql.Tx, data *Order) error {
+	productIdKey := fmt.Sprintf("%s%v", cacheOrderIdPrefix, data.Id)
+	_, err := m.Exec(func(conn sqlx.SqlConn) (result sql.Result, err error) {
+		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, orderRowsWithPlaceHolder)
+		return tx.Exec(query, data.Uid, data.Pid, data.Amount, data.Status, data.Id)
+	}, productIdKey)
+	return err
 }

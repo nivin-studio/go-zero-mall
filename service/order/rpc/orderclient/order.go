@@ -28,6 +28,7 @@ type (
 
 	Order interface {
 		Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+		CreateRevert(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 		Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 		Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*RemoveResponse, error)
 		Detail(ctx context.Context, in *DetailRequest, opts ...grpc.CallOption) (*DetailResponse, error)
@@ -49,6 +50,11 @@ func NewOrder(cli zrpc.Client) Order {
 func (m *defaultOrder) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	client := order.NewOrderClient(m.cli.Conn())
 	return client.Create(ctx, in, opts...)
+}
+
+func (m *defaultOrder) CreateRevert(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
+	client := order.NewOrderClient(m.cli.Conn())
+	return client.CreateRevert(ctx, in, opts...)
 }
 
 func (m *defaultOrder) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {

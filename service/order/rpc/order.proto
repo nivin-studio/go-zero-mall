@@ -68,6 +68,7 @@ message PaidResponse {
 
 service Order {
     rpc Create(CreateRequest) returns(CreateResponse);
+    rpc CreateRevert(CreateRequest) returns(CreateResponse);
     rpc Update(UpdateRequest) returns(UpdateResponse);
     rpc Remove(RemoveRequest) returns(RemoveResponse);
     rpc Detail(DetailRequest) returns(DetailResponse);
