@@ -28,7 +28,7 @@ type (
 		FindOne(id int64) (*Product, error)
 		Update(data *Product) error
 		Delete(id int64) error
-		RawDB() (*sql.DB, error)
+		// RawDB() (*sql.DB, error)
 		TxUpdate(tx *sql.Tx, data *Product) error
 	}
 
@@ -108,9 +108,9 @@ func (m *defaultProductModel) queryPrimary(conn sqlx.SqlConn, v, primary interfa
 	return conn.QueryRow(v, query, primary)
 }
 
-func (m *defaultProductModel) RawDB() (*sql.DB, error) {
-	return m.CachedConn.RawDB()
-}
+// func (m *defaultProductModel) RawDB() (*sql.DB, error) {
+// 	return m.CachedConn.RawDB()
+// }
 
 func (m *defaultProductModel) TxUpdate(tx *sql.Tx, data *Product) error {
 	productIdKey := fmt.Sprintf("%s%v", cacheProductIdPrefix, data.Id)

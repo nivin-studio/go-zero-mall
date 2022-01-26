@@ -27,9 +27,10 @@ type (
 		Insert(data *Order) (sql.Result, error)
 		FindOne(id int64) (*Order, error)
 		FindAllByUid(uid int64) ([]*Order, error)
+		FindOneByUid(uid int64) (*Order, error)
 		Update(data *Order) error
 		Delete(id int64) error
-		RawDB() (*sql.DB, error)
+		// RawDB() (*sql.DB, error)
 		TxInsert(tx *sql.Tx, data *Order) (sql.Result, error)
 		TxUpdate(tx *sql.Tx, data *Order) error
 	}
@@ -125,9 +126,9 @@ func (m *defaultOrderModel) queryPrimary(conn sqlx.SqlConn, v, primary interface
 	return conn.QueryRow(v, query, primary)
 }
 
-func (m *defaultOrderModel) RawDB() (*sql.DB, error) {
-	return m.CachedConn.RawDB()
-}
+// func (m *defaultOrderModel) RawDB() (*sql.DB, error) {
+// 	return m.CachedConn.RawDB()
+// }
 
 func (m *defaultOrderModel) TxInsert(tx *sql.Tx, data *Order) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?)", m.table, orderRowsExpectAutoSet)
@@ -143,4 +144,20 @@ func (m *defaultOrderModel) TxUpdate(tx *sql.Tx, data *Order) error {
 		return tx.Exec(query, data.Uid, data.Pid, data.Amount, data.Status, data.Id)
 	}, productIdKey)
 	return err
+}
+
+func (m *defaultOrderModel) FindOneByUid(uid int64) (*Order, error) {
+	var resp Order
+
+	query := fmt.Sprintf("select %s from %s where `uid` = ? order by create_time desc limit 1", orderRows, m.table)
+	err := m.QueryRowNoCache(&resp, query, uid)
+
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }

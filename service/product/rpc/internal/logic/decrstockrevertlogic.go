@@ -12,6 +12,7 @@ import (
 	"github.com/dtm-labs/dtmcli"
 	"github.com/dtm-labs/dtmgrpc"
 	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/tal-tech/go-zero/core/stores/sqlx"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -32,7 +33,7 @@ func NewDecrStockRevertLogic(ctx context.Context, svcCtx *svc.ServiceContext) *D
 
 func (l *DecrStockRevertLogic) DecrStockRevert(in *product.DecrStockRequest) (*product.DecrStockResponse, error) {
 	// 获取 RawDB
-	db, err := l.svcCtx.ProductModel.RawDB()
+	db, err := sqlx.NewMysql(l.svcCtx.Config.Mysql.DataSource).RawDB()
 	if err != nil {
 		return nil, status.Error(codes.Aborted, err.Error())
 	}
