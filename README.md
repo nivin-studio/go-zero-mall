@@ -1,6 +1,8 @@
 # go-zero实战：让微服务Go起来
 这是一个 `go-zero` 入门学习教程的示例代码，教程地址：[go-zero实战：让微服务Go起来](https://juejin.cn/post/7036011047391592485)。
 
+`DTM` 分布式事务示例代码请切换至 [dtm](https://github.com/nivin-studio/go-zero-mall/tree/dtm) 分支。
+
 ## 使用
 
 ### 1. `docker` 本地开发环境安装
