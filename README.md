@@ -1,7 +1,7 @@
 # go-zero实战：让微服务Go起来
 这是一个 `go-zero` 入门学习教程的 `DTM` 分布式事务示例代码，教程地址：[go-zero实战：让微服务Go起来](https://juejin.cn/post/7036011047391592485)。
 
-#### 创建子事务屏障相关的表
+#### 子事务屏障相关的表
 ```sql
 create database if not exists dtm_barrier
 /*!40100 DEFAULT CHARACTER SET utf8mb4 */
