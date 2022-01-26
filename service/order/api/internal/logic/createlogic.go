@@ -44,7 +44,6 @@ func (l *CreateLogic) Create(req types.CreateRequest) (resp *types.CreateRespons
 	var dtmServer = "etcd://etcd:2379/dtmservice"
 	// 创建一个gid
 	gid := dtmgrpc.MustGenGid(dtmServer)
-
 	// 创建一个saga协议的事务
 	saga := dtmgrpc.NewSagaGrpc(dtmServer, gid).
 		Add(orderRpcBusiServer+"/orderclient.Order/Create", orderRpcBusiServer+"/orderclient.Order/CreateRevert", &order.CreateRequest{

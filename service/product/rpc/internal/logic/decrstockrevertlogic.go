@@ -55,7 +55,7 @@ func (l *DecrStockRevertLogic) DecrStockRevert(in *product.DecrStockRequest) (*p
 		}
 
 		res.Stock += in.Num
-
+		// 更新产品库存
 		err = l.svcCtx.ProductModel.TxUpdate(tx, res)
 		if err != nil {
 			return fmt.Errorf("产品库存处理失败")

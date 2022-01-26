@@ -60,7 +60,7 @@ func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, er
 			Amount: in.Amount,
 			Status: 0,
 		}
-
+		// 创建订单
 		_, err = l.svcCtx.OrderModel.TxInsert(tx, &newOrder)
 		if err != nil {
 			return fmt.Errorf("订单创建失败")

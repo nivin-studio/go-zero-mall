@@ -58,7 +58,7 @@ func (l *DecrStockLogic) DecrStock(in *product.DecrStockRequest) (*product.DecrS
 		if res.Stock < 0 {
 			return fmt.Errorf("产品库存不足")
 		}
-
+		// 更新产品库存
 		err = l.svcCtx.ProductModel.TxUpdate(tx, res)
 		if err != nil {
 			return fmt.Errorf("产品库存处理失败")
