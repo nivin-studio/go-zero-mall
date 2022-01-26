@@ -39,12 +39,12 @@ func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, er
 		return nil, status.Error(codes.Aborted, err.Error())
 	}
 
-	// 获取 barrier，用于防止空补偿、空悬挂
+	// 获取子事务屏障对象
 	barrier, err := dtmgrpc.BarrierFromGrpc(l.ctx)
 	if err != nil {
 		return nil, status.Error(codes.Aborted, err.Error())
 	}
-
+	// 开启子事务屏障
 	if err := barrier.CallWithDB(db, func(tx *sql.Tx) error {
 		// 查询用户是否存在
 		_, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{

@@ -3,6 +3,7 @@ module mall
 go 1.17
 
 require (
+	github.com/dtm-labs/driver-gozero v0.0.1
 	github.com/dtm-labs/dtmcli v1.10.2
 	github.com/golang-jwt/jwt v3.2.1+incompatible
 	github.com/tal-tech/go-zero v1.2.4
@@ -14,6 +15,7 @@ require (
 require (
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dtm-labs/dtmdriver v0.0.1 // indirect
+	github.com/dtm-labs/dtmdriver-gozero v0.0.1 // indirect
 	github.com/go-redis/redis/v8 v8.11.4 // indirect
 	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

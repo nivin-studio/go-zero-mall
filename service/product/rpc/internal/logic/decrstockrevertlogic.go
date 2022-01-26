@@ -38,12 +38,12 @@ func (l *DecrStockRevertLogic) DecrStockRevert(in *product.DecrStockRequest) (*p
 		return nil, status.Error(codes.Aborted, err.Error())
 	}
 
-	// 获取 barrier，用于防止空补偿、空悬挂
+	// 获取子事务屏障对象
 	barrier, err := dtmgrpc.BarrierFromGrpc(l.ctx)
 	if err != nil {
 		return nil, status.Error(codes.Aborted, err.Error())
 	}
-
+	// 开启子事务屏障
 	if err := barrier.CallWithDB(db, func(tx *sql.Tx) error {
 		// 查询产品是否存在
 		res, err := l.svcCtx.ProductModel.FindOne(in.Id)

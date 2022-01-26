@@ -97,10 +97,14 @@ github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f h1:lO4WD4F/r
 github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f/go.mod h1:cuUVRXasLTGF7a8hSLbxyZXjz+1KgoB3wDUb6vlszIc=
 github.com/docker/spdystream v0.0.0-20160310174837-449fdfce4d96/go.mod h1:Qh8CwZgvJUkLughtfhJv5dyTYa91l1fOUCrgjqmcifM=
 github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815/go.mod h1:WwZ+bS3ebgob9U8Nd0kOddGdZWjyMGR8Wziv+TBNwSE=
+github.com/dtm-labs/driver-gozero v0.0.1 h1:F4e5sotgzqvkpjMN2J+03Q5XzxYVZkNKOkWegyyJ/mo=
+github.com/dtm-labs/driver-gozero v0.0.1/go.mod h1:HTWINKprF+rn5wcNoggkcgS/l0+7mxNkBqor/oObACg=
 github.com/dtm-labs/dtmcli v1.10.2 h1:JS5CRxldwrX4mvR54zYBgbSHjaM1DawSRRQodZlNCjY=
 github.com/dtm-labs/dtmcli v1.10.2/go.mod h1:P3dVK3b45mtLTugpqtUNHF+wtfcbFZ0EW/hJaoN0rEI=
 github.com/dtm-labs/dtmdriver v0.0.1 h1:dHUZQ6g2ZN6eRUqds9kKq/3K7u9bcUGatUlbthD92fA=
 github.com/dtm-labs/dtmdriver v0.0.1/go.mod h1:fLiEeD2BPwM9Yq96TfcP9KpbTwFsn5nTxa/PP0jmFuk=
+github.com/dtm-labs/dtmdriver-gozero v0.0.1 h1:ExDhMsn3MJCd+psSmIJVDgGUqbFrQGP0IpKL8x900AE=
+github.com/dtm-labs/dtmdriver-gozero v0.0.1/go.mod h1:uIiAMkG/Vp4jvINk5XfVMT0mSCzRqIYyXgpmqAQfqbA=
 github.com/dtm-labs/dtmgrpc v1.10.2 h1:OivCi8fs6xOjexafgkz8pQbIOCLmIEl5LYXQMRO5ycU=
 github.com/dtm-labs/dtmgrpc v1.10.2/go.mod h1:LHpYNlNUue/+Q9nQUmpqxFgGCS5R8pLMvNF+wX2M7q8=
 github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
