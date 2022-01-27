@@ -29,7 +29,7 @@ type (
 		Update(data *Product) error
 		Delete(id int64) error
 		// RawDB() (*sql.DB, error)
-		TxUpdate(tx *sql.Tx, data *Product) error
+		TxAdjustStock(tx *sql.Tx, id int64, delta int) (sql.Result, error)
 	}
 
 	defaultProductModel struct {
@@ -112,11 +112,10 @@ func (m *defaultProductModel) queryPrimary(conn sqlx.SqlConn, v, primary interfa
 // 	return m.CachedConn.RawDB()
 // }
 
-func (m *defaultProductModel) TxUpdate(tx *sql.Tx, data *Product) error {
-	productIdKey := fmt.Sprintf("%s%v", cacheProductIdPrefix, data.Id)
-	_, err := m.Exec(func(conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, productRowsWithPlaceHolder)
-		return tx.Exec(query, data.Name, data.Desc, data.Stock, data.Amount, data.Status, data.Id)
+func (m *defaultProductModel) TxAdjustStock(tx *sql.Tx, id int64, delta int) (sql.Result, error) {
+	productIdKey := fmt.Sprintf("%s%v", cacheProductIdPrefix, id)
+	return m.Exec(func(conn sqlx.SqlConn) (result sql.Result, err error) {
+		query := fmt.Sprintf("update %s set stock=stock+? where stock >= -? and id=?", m.table)
+		return tx.Exec(query, delta, delta, id)
 	}, productIdKey)
-	return err
 }

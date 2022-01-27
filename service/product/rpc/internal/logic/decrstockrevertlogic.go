@@ -3,17 +3,13 @@ package logic
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
-	"mall/service/product/model"
 	"mall/service/product/rpc/internal/svc"
 	"mall/service/product/rpc/product"
 
-	"github.com/dtm-labs/dtmcli"
 	"github.com/dtm-labs/dtmgrpc"
 	"github.com/tal-tech/go-zero/core/logx"
 	"github.com/tal-tech/go-zero/core/stores/sqlx"
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
@@ -35,35 +31,23 @@ func (l *DecrStockRevertLogic) DecrStockRevert(in *product.DecrStockRequest) (*p
 	// 获取 RawDB
 	db, err := sqlx.NewMysql(l.svcCtx.Config.Mysql.DataSource).RawDB()
 	if err != nil {
-		return nil, status.Error(codes.Aborted, err.Error())
+		return nil, status.Error(500, err.Error())
 	}
 
 	// 获取子事务屏障对象
 	barrier, err := dtmgrpc.BarrierFromGrpc(l.ctx)
 	if err != nil {
-		return nil, status.Error(codes.Aborted, err.Error())
+		return nil, status.Error(500, err.Error())
 	}
 	// 开启子事务屏障
-	if err := barrier.CallWithDB(db, func(tx *sql.Tx) error {
-		// 查询产品是否存在
-		res, err := l.svcCtx.ProductModel.FindOne(in.Id)
-		if err != nil {
-			if err == model.ErrNotFound {
-				return fmt.Errorf("产品不存在")
-			}
-			return err
-		}
-
-		res.Stock += in.Num
+	err = barrier.CallWithDB(db, func(tx *sql.Tx) error {
 		// 更新产品库存
-		err = l.svcCtx.ProductModel.TxUpdate(tx, res)
-		if err != nil {
-			return fmt.Errorf("产品库存处理失败")
-		}
+		_, err := l.svcCtx.ProductModel.TxAdjustStock(tx, in.Id, 1)
+		return err
+	})
 
-		return nil
-	}); err != nil {
-		return nil, status.Error(codes.Aborted, dtmcli.ResultFailure)
+	if err != nil {
+		return nil, err
 	}
 
 	return &product.DecrStockResponse{}, nil

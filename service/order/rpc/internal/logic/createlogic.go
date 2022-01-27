@@ -10,11 +10,9 @@ import (
 	"mall/service/order/rpc/order"
 	"mall/service/user/rpc/user"
 
-	"github.com/dtm-labs/dtmcli"
 	"github.com/dtm-labs/dtmgrpc"
 	"github.com/tal-tech/go-zero/core/logx"
 	"github.com/tal-tech/go-zero/core/stores/sqlx"
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
@@ -36,13 +34,13 @@ func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, er
 	// 获取 RawDB
 	db, err := sqlx.NewMysql(l.svcCtx.Config.Mysql.DataSource).RawDB()
 	if err != nil {
-		return nil, status.Error(codes.Aborted, err.Error())
+		return nil, status.Error(500, err.Error())
 	}
 
 	// 获取子事务屏障对象
 	barrier, err := dtmgrpc.BarrierFromGrpc(l.ctx)
 	if err != nil {
-		return nil, status.Error(codes.Aborted, err.Error())
+		return nil, status.Error(500, err.Error())
 	}
 	// 开启子事务屏障
 	if err := barrier.CallWithDB(db, func(tx *sql.Tx) error {
@@ -68,7 +66,7 @@ func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, er
 
 		return nil
 	}); err != nil {
-		return nil, status.Error(codes.Aborted, dtmcli.ResultFailure)
+		return nil, status.Error(500, err.Error())
 	}
 
 	return &order.CreateResponse{}, nil

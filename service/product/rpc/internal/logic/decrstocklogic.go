@@ -3,9 +3,7 @@ package logic
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
-	"mall/service/product/model"
 	"mall/service/product/rpc/internal/svc"
 	"mall/service/product/rpc/product"
 
@@ -35,38 +33,38 @@ func (l *DecrStockLogic) DecrStock(in *product.DecrStockRequest) (*product.DecrS
 	// 获取 RawDB
 	db, err := sqlx.NewMysql(l.svcCtx.Config.Mysql.DataSource).RawDB()
 	if err != nil {
-		return nil, status.Error(codes.Aborted, err.Error())
+		return nil, status.Error(500, err.Error())
 	}
 
 	// 获取子事务屏障对象
 	barrier, err := dtmgrpc.BarrierFromGrpc(l.ctx)
 	if err != nil {
-		return nil, status.Error(codes.Aborted, err.Error())
+		return nil, status.Error(500, err.Error())
 	}
 	// 开启子事务屏障
-	if err := barrier.CallWithDB(db, func(tx *sql.Tx) error {
-		// 查询产品是否存在
-		res, err := l.svcCtx.ProductModel.FindOne(in.Id)
+	err = barrier.CallWithDB(db, func(tx *sql.Tx) error {
+		// 更新产品库存
+		result, err := l.svcCtx.ProductModel.TxAdjustStock(tx, in.Id, -1)
 		if err != nil {
-			if err == model.ErrNotFound {
-				return fmt.Errorf("产品不存在")
-			}
 			return err
 		}
 
-		res.Stock -= in.Num
-		if res.Stock < 0 {
-			return fmt.Errorf("产品库存不足")
-		}
-		// 更新产品库存
-		err = l.svcCtx.ProductModel.TxUpdate(tx, res)
-		if err != nil {
-			return fmt.Errorf("产品库存处理失败")
+		affected, err := result.RowsAffected()
+		// 库存不足，返回子事务失败
+		if err == nil && affected == 0 {
+			return dtmcli.ErrFailure
 		}
 
-		return nil
-	}); err != nil {
+		return err
+	})
+
+	// 这种情况是库存不足，不再重试，走回滚
+	if err == dtmcli.ErrFailure {
 		return nil, status.Error(codes.Aborted, dtmcli.ResultFailure)
+	}
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &product.DecrStockResponse{}, nil
