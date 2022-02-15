@@ -8,8 +8,8 @@ import (
 	"mall/service/product/api/internal/handler"
 	"mall/service/product/api/internal/svc"
 
-	"github.com/tal-tech/go-zero/core/conf"
-	"github.com/tal-tech/go-zero/rest"
+	"github.com/zeromicro/go-zero/core/conf"
+	"github.com/zeromicro/go-zero/rest"
 )
 
 var configFile = flag.String("f", "etc/product.yaml", "the config file")

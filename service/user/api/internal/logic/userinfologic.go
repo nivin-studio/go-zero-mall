@@ -8,7 +8,7 @@ import (
 	"mall/service/user/api/internal/types"
 	"mall/service/user/rpc/userclient"
 
-	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type UserInfoLogic struct {

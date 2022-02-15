@@ -7,7 +7,7 @@ import (
 	"mall/service/pay/api/internal/types"
 	"mall/service/pay/rpc/pay"
 
-	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type DetailLogic struct {
