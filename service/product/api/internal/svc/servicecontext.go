@@ -4,7 +4,7 @@ import (
 	"mall/service/product/api/internal/config"
 	"mall/service/product/rpc/productclient"
 
-	"github.com/tal-tech/go-zero/zrpc"
+	"github.com/zeromicro/go-zero/zrpc"
 )
 
 type ServiceContext struct {

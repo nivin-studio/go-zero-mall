@@ -7,7 +7,7 @@ import (
 	"mall/service/product/rpc/internal/svc"
 	"mall/service/product/rpc/product"
 
-	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
 )
 

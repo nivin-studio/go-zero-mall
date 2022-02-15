@@ -9,7 +9,7 @@ import (
 	"mall/service/pay/rpc/pay"
 	"mall/service/user/rpc/user"
 
-	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
 )
 
