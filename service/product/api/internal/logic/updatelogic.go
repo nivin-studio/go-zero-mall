@@ -7,7 +7,7 @@ import (
 	"mall/service/product/api/internal/types"
 	"mall/service/product/rpc/product"
 
-	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type UpdateLogic struct {

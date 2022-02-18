@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/tal-tech/go-zero/rest/httpx"
+	"github.com/zeromicro/go-zero/rest/httpx"
 	"mall/service/order/api/internal/logic"
 	"mall/service/order/api/internal/svc"
 	"mall/service/order/api/internal/types"
