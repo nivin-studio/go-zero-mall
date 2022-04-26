@@ -18,7 +18,7 @@ func CallbackHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := logic.NewCallbackLogic(r.Context(), svcCtx)
-		resp, err := l.Callback(req)
+		resp, err := l.Callback(&req)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {

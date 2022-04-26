@@ -5,7 +5,7 @@ import (
 
 	"mall/service/user/api/internal/svc"
 	"mall/service/user/api/internal/types"
-	"mall/service/user/rpc/userclient"
+	"mall/service/user/rpc/types/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -16,16 +16,16 @@ type RegisterLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) RegisterLogic {
-	return RegisterLogic{
+func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RegisterLogic {
+	return &RegisterLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *RegisterLogic) Register(req types.RegisterRequest) (resp *types.RegisterResponse, err error) {
-	res, err := l.svcCtx.UserRpc.Register(l.ctx, &userclient.RegisterRequest{
+func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.RegisterResponse, err error) {
+	res, err := l.svcCtx.UserRpc.Register(l.ctx, &user.RegisterRequest{
 		Name:     req.Name,
 		Gender:   req.Gender,
 		Mobile:   req.Mobile,

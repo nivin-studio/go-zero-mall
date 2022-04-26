@@ -18,7 +18,7 @@ func ListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := logic.NewListLogic(r.Context(), svcCtx)
-		resp, err := l.List(req)
+		resp, err := l.List(&req)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {

@@ -63,17 +63,17 @@ type (
 )
 service Order {
 	@handler Create
-	post /api/order/create(CreateRequest) returns (CreateResponse)
+	post /api/order/create (CreateRequest) returns (CreateResponse)
 	
 	@handler Update
-	post /api/order/update(UpdateRequest) returns (UpdateResponse)
+	post /api/order/update (UpdateRequest) returns (UpdateResponse)
 	
 	@handler Remove
-	post /api/order/remove(RemoveRequest) returns (RemoveResponse)
+	post /api/order/remove (RemoveRequest) returns (RemoveResponse)
 	
 	@handler Detail
-	post /api/order/detail(DetailRequest) returns (DetailResponse)
+	post /api/order/detail (DetailRequest) returns (DetailResponse)
 	
 	@handler List
-	post /api/order/list(ListRequest) returns (ListResponse)
+	post /api/order/list (ListRequest) returns (ListResponse)
 }

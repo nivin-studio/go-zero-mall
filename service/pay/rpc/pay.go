@@ -7,7 +7,7 @@ import (
 	"mall/service/pay/rpc/internal/config"
 	"mall/service/pay/rpc/internal/server"
 	"mall/service/pay/rpc/internal/svc"
-	"mall/service/pay/rpc/pay"
+	"mall/service/pay/rpc/types/pay"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -24,10 +24,10 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	ctx := svc.NewServiceContext(c)
-	srv := server.NewPayServer(ctx)
+	svr := server.NewPayServer(ctx)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		pay.RegisterPayServer(grpcServer, srv)
+		pay.RegisterPayServer(grpcServer, svr)
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)

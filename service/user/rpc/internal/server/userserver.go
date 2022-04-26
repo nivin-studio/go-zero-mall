@@ -8,11 +8,12 @@ import (
 
 	"mall/service/user/rpc/internal/logic"
 	"mall/service/user/rpc/internal/svc"
-	"mall/service/user/rpc/user"
+	"mall/service/user/rpc/types/user"
 )
 
 type UserServer struct {
 	svcCtx *svc.ServiceContext
+	user.UnimplementedUserServer
 }
 
 func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {

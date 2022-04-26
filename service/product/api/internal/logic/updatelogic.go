@@ -5,7 +5,7 @@ import (
 
 	"mall/service/product/api/internal/svc"
 	"mall/service/product/api/internal/types"
-	"mall/service/product/rpc/product"
+	"mall/service/product/rpc/types/product"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -16,15 +16,15 @@ type UpdateLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) UpdateLogic {
-	return UpdateLogic{
+func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogic {
+	return &UpdateLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UpdateLogic) Update(req types.UpdateRequest) (resp *types.UpdateResponse, err error) {
+func (l *UpdateLogic) Update(req *types.UpdateRequest) (resp *types.UpdateResponse, err error) {
 	_, err = l.svcCtx.ProductRpc.Update(l.ctx, &product.UpdateRequest{
 		Id:     req.Id,
 		Name:   req.Name,

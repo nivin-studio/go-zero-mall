@@ -18,7 +18,7 @@ func RemoveHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := logic.NewRemoveLogic(r.Context(), svcCtx)
-		resp, err := l.Remove(req)
+		resp, err := l.Remove(&req)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {

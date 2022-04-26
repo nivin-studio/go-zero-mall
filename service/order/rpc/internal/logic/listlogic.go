@@ -5,8 +5,8 @@ import (
 
 	"mall/service/order/model"
 	"mall/service/order/rpc/internal/svc"
-	"mall/service/order/rpc/order"
-	"mall/service/user/rpc/user"
+	"mall/service/order/rpc/types/order"
+	"mall/service/user/rpc/types/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
@@ -36,7 +36,7 @@ func (l *ListLogic) List(in *order.ListRequest) (*order.ListResponse, error) {
 	}
 
 	// 查询订单是否存在
-	list, err := l.svcCtx.OrderModel.FindAllByUid(in.Uid)
+	list, err := l.svcCtx.OrderModel.FindAllByUid(l.ctx, in.Uid)
 	if err != nil {
 		if err == model.ErrNotFound {
 			return nil, status.Error(100, "订单不存在")

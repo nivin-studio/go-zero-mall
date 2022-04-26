@@ -5,7 +5,7 @@ import (
 
 	"mall/service/product/api/internal/svc"
 	"mall/service/product/api/internal/types"
-	"mall/service/product/rpc/product"
+	"mall/service/product/rpc/types/product"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -16,15 +16,15 @@ type CreateLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic {
-	return CreateLogic{
+func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogic {
+	return &CreateLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *CreateLogic) Create(req types.CreateRequest) (resp *types.CreateResponse, err error) {
+func (l *CreateLogic) Create(req *types.CreateRequest) (resp *types.CreateResponse, err error) {
 	res, err := l.svcCtx.ProductRpc.Create(l.ctx, &product.CreateRequest{
 		Name:   req.Name,
 		Desc:   req.Desc,

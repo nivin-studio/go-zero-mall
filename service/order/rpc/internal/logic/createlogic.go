@@ -5,9 +5,9 @@ import (
 
 	"mall/service/order/model"
 	"mall/service/order/rpc/internal/svc"
-	"mall/service/order/rpc/order"
-	"mall/service/product/rpc/product"
-	"mall/service/user/rpc/user"
+	"mall/service/order/rpc/types/order"
+	"mall/service/product/rpc/types/product"
+	"mall/service/user/rpc/types/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
@@ -54,8 +54,8 @@ func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, er
 		Amount: in.Amount,
 		Status: 0,
 	}
-
-	res, err := l.svcCtx.OrderModel.Insert(&newOrder)
+	// 创建订单
+	res, err := l.svcCtx.OrderModel.Insert(l.ctx, &newOrder)
 	if err != nil {
 		return nil, status.Error(500, err.Error())
 	}
@@ -64,7 +64,7 @@ func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, er
 	if err != nil {
 		return nil, status.Error(500, err.Error())
 	}
-
+	// 更新产品库存
 	_, err = l.svcCtx.ProductRpc.Update(l.ctx, &product.UpdateRequest{
 		Id:     productRes.Id,
 		Name:   productRes.Name,
