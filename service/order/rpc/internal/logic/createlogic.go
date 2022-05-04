@@ -7,8 +7,8 @@ import (
 
 	"mall/service/order/model"
 	"mall/service/order/rpc/internal/svc"
-	"mall/service/order/rpc/order"
-	"mall/service/user/rpc/user"
+	"mall/service/order/rpc/types/order"
+	"mall/service/user/rpc/types/user"
 
 	"github.com/dtm-labs/dtmgrpc"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -59,7 +59,7 @@ func (l *CreateLogic) Create(in *order.CreateRequest) (*order.CreateResponse, er
 			Status: 0,
 		}
 		// 创建订单
-		_, err = l.svcCtx.OrderModel.TxInsert(tx, &newOrder)
+		_, err = l.svcCtx.OrderModel.TxInsert(l.ctx, tx, &newOrder)
 		if err != nil {
 			return fmt.Errorf("订单创建失败")
 		}

@@ -1,42 +1,42 @@
 syntax = "proto3";
 
-package payclient;
+package pay;
 
-option go_package = "pay";
+option go_package = "./pay";
 
 // 支付创建
 message CreateRequest {
-    int64 Uid = 1;
-    int64 Oid = 2;
-    int64 Amount = 3;
+  int64 Uid = 1;
+  int64 Oid = 2;
+  int64 Amount = 3;
 }
 message CreateResponse {
-	int64 id = 1;
+  int64 id = 1;
 }
 // 支付创建
 
 // 支付详情
 message DetailRequest {
-    int64 id = 1;
+  int64 id = 1;
 }
 message DetailResponse {
-    int64 id = 1;
-    int64 Uid = 2;
-    int64 Oid = 3;
-    int64 Amount = 4;
-    int64 Source = 5;
-    int64 Status = 6;
+  int64 id = 1;
+  int64 Uid = 2;
+  int64 Oid = 3;
+  int64 Amount = 4;
+  int64 Source = 5;
+  int64 Status = 6;
 }
 // 支付详情
 
 // 支付详情
 message CallbackRequest {
-    int64 id = 1;
-    int64 Uid = 2;
-    int64 Oid = 3;
-    int64 Amount = 4;
-    int64 Source = 5;
-    int64 Status = 6;
+  int64 id = 1;
+  int64 Uid = 2;
+  int64 Oid = 3;
+  int64 Amount = 4;
+  int64 Source = 5;
+  int64 Status = 6;
 }
 message CallbackResponse {
 }
@@ -44,7 +44,7 @@ message CallbackResponse {
 
 
 service Pay {
-    rpc Create(CreateRequest) returns(CreateResponse);
-    rpc Detail(DetailRequest) returns(DetailResponse);
-    rpc Callback(CallbackRequest) returns(CallbackResponse);
+  rpc Create(CreateRequest) returns(CreateResponse);
+  rpc Detail(DetailRequest) returns(DetailResponse);
+  rpc Callback(CallbackRequest) returns(CallbackResponse);
 }

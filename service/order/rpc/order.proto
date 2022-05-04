@@ -1,28 +1,28 @@
 syntax = "proto3";
 
-package orderclient;
+package order;
 
-option go_package = "order";
+option go_package = "./order";
 
 // 订单创建
 message CreateRequest {
-    int64 Uid = 1;
-    int64 Pid = 2;
-    int64 Amount = 3;
-    int64 Status = 4;
+  int64 Uid = 1;
+  int64 Pid = 2;
+  int64 Amount = 3;
+  int64 Status = 4;
 }
 message CreateResponse {
-	int64 id = 1;
+  int64 id = 1;
 }
 // 订单创建
 
 // 订单修改
 message UpdateRequest {
-    int64 id = 1;
-    int64 Uid = 2;
-    int64 Pid = 3;
-    int64 Amount = 4;
-    int64 Status = 5;
+  int64 id = 1;
+  int64 Uid = 2;
+  int64 Pid = 3;
+  int64 Amount = 4;
+  int64 Status = 5;
 }
 message UpdateResponse {
 }
@@ -30,7 +30,7 @@ message UpdateResponse {
 
 // 订单删除
 message RemoveRequest {
-    int64 id = 1;
+  int64 id = 1;
 }
 message RemoveResponse {
 }
@@ -38,40 +38,40 @@ message RemoveResponse {
 
 // 订单详情
 message DetailRequest {
-    int64 id = 1;
+  int64 id = 1;
 }
 message DetailResponse {
-    int64 id = 1;
-    int64 Uid = 2;
-    int64 Pid = 3;
-    int64 Amount = 4;
-    int64 Status = 5;
+  int64 id = 1;
+  int64 Uid = 2;
+  int64 Pid = 3;
+  int64 Amount = 4;
+  int64 Status = 5;
 }
 // 订单详情
 
 // 订单列表
 message ListRequest {
-    int64 uid = 1;
+  int64 uid = 1;
 }
 message ListResponse {
-    repeated DetailResponse data = 1;
+  repeated DetailResponse data = 1;
 }
 // 订单列表
 
 // 订单支付
 message PaidRequest {
-    int64 id = 1;
+  int64 id = 1;
 }
 message PaidResponse {
 }
 // 订单支付
 
 service Order {
-    rpc Create(CreateRequest) returns(CreateResponse);
-    rpc CreateRevert(CreateRequest) returns(CreateResponse);
-    rpc Update(UpdateRequest) returns(UpdateResponse);
-    rpc Remove(RemoveRequest) returns(RemoveResponse);
-    rpc Detail(DetailRequest) returns(DetailResponse);
-    rpc List(ListRequest) returns(ListResponse);
-    rpc Paid(PaidRequest) returns(PaidResponse);
+  rpc Create(CreateRequest) returns(CreateResponse);
+  rpc CreateRevert(CreateRequest) returns(CreateResponse);
+  rpc Update(UpdateRequest) returns(UpdateResponse);
+  rpc Remove(RemoveRequest) returns(RemoveResponse);
+  rpc Detail(DetailRequest) returns(DetailResponse);
+  rpc List(ListRequest) returns(ListResponse);
+  rpc Paid(PaidRequest) returns(PaidResponse);
 }

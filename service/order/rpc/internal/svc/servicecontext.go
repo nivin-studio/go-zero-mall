@@ -3,8 +3,8 @@ package svc
 import (
 	"mall/service/order/model"
 	"mall/service/order/rpc/internal/config"
-	"mall/service/product/rpc/productclient"
-	"mall/service/user/rpc/userclient"
+	"mall/service/product/rpc/product"
+	"mall/service/user/rpc/user"
 
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/zrpc"
@@ -15,8 +15,8 @@ type ServiceContext struct {
 
 	OrderModel model.OrderModel
 
-	UserRpc    userclient.User
-	ProductRpc productclient.Product
+	UserRpc    user.User
+	ProductRpc product.Product
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -24,7 +24,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:     c,
 		OrderModel: model.NewOrderModel(conn, c.CacheRedis),
-		UserRpc:    userclient.NewUser(zrpc.MustNewClient(c.UserRpc)),
-		ProductRpc: productclient.NewProduct(zrpc.MustNewClient(c.ProductRpc)),
+		UserRpc:    user.NewUser(zrpc.MustNewClient(c.UserRpc)),
+		ProductRpc: product.NewProduct(zrpc.MustNewClient(c.ProductRpc)),
 	}
 }

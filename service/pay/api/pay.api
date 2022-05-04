@@ -44,11 +44,11 @@ type (
 )
 service Pay {
 	@handler Create
-	post /api/pay/create(CreateRequest) returns (CreateResponse)
+	post /api/pay/create (CreateRequest) returns (CreateResponse)
 	
 	@handler Detail
-	post /api/pay/detail(DetailRequest) returns (DetailResponse)
+	post /api/pay/detail (DetailRequest) returns (DetailResponse)
 	
 	@handler Callback
-	post /api/pay/callback(CallbackRequest) returns (CallbackResponse)
+	post /api/pay/callback (CallbackRequest) returns (CallbackResponse)
 }

@@ -5,7 +5,7 @@ import (
 
 	"mall/service/order/api/internal/svc"
 	"mall/service/order/api/internal/types"
-	"mall/service/order/rpc/orderclient"
+	"mall/service/order/rpc/types/order"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -16,16 +16,16 @@ type UpdateLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) UpdateLogic {
-	return UpdateLogic{
+func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogic {
+	return &UpdateLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UpdateLogic) Update(req types.UpdateRequest) (resp *types.UpdateResponse, err error) {
-	_, err = l.svcCtx.OrderRpc.Update(l.ctx, &orderclient.UpdateRequest{
+func (l *UpdateLogic) Update(req *types.UpdateRequest) (resp *types.UpdateResponse, err error) {
+	_, err = l.svcCtx.OrderRpc.Update(l.ctx, &order.UpdateRequest{
 		Id:     req.Id,
 		Uid:    req.Uid,
 		Pid:    req.Pid,

@@ -5,7 +5,7 @@ import (
 
 	"mall/service/pay/api/internal/svc"
 	"mall/service/pay/api/internal/types"
-	"mall/service/pay/rpc/pay"
+	"mall/service/pay/rpc/types/pay"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -16,15 +16,15 @@ type CreateLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic {
-	return CreateLogic{
+func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogic {
+	return &CreateLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *CreateLogic) Create(req types.CreateRequest) (resp *types.CreateResponse, err error) {
+func (l *CreateLogic) Create(req *types.CreateRequest) (resp *types.CreateResponse, err error) {
 	res, err := l.svcCtx.PayRpc.Create(l.ctx, &pay.CreateRequest{
 		Uid:    req.Uid,
 		Oid:    req.Oid,

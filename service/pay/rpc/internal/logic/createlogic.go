@@ -3,11 +3,11 @@ package logic
 import (
 	"context"
 
-	"mall/service/order/rpc/order"
+	"mall/service/order/rpc/types/order"
 	"mall/service/pay/model"
 	"mall/service/pay/rpc/internal/svc"
-	"mall/service/pay/rpc/pay"
-	"mall/service/user/rpc/user"
+	"mall/service/pay/rpc/types/pay"
+	"mall/service/user/rpc/types/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
@@ -45,7 +45,7 @@ func (l *CreateLogic) Create(in *pay.CreateRequest) (*pay.CreateResponse, error)
 	}
 
 	// 查询订单是否已经创建支付
-	_, err = l.svcCtx.PayModel.FindOneByOid(in.Oid)
+	_, err = l.svcCtx.PayModel.FindOneByOid(l.ctx, in.Oid)
 	if err == nil {
 		return nil, status.Error(100, "订单已创建支付")
 	}
@@ -58,7 +58,7 @@ func (l *CreateLogic) Create(in *pay.CreateRequest) (*pay.CreateResponse, error)
 		Status: 0,
 	}
 
-	res, err := l.svcCtx.PayModel.Insert(&newPay)
+	res, err := l.svcCtx.PayModel.Insert(l.ctx, &newPay)
 	if err != nil {
 		return nil, status.Error(500, err.Error())
 	}

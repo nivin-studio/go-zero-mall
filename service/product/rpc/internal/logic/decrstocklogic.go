@@ -5,7 +5,7 @@ import (
 	"database/sql"
 
 	"mall/service/product/rpc/internal/svc"
-	"mall/service/product/rpc/product"
+	"mall/service/product/rpc/types/product"
 
 	"github.com/dtm-labs/dtmcli"
 	"github.com/dtm-labs/dtmgrpc"
@@ -44,7 +44,7 @@ func (l *DecrStockLogic) DecrStock(in *product.DecrStockRequest) (*product.DecrS
 	// 开启子事务屏障
 	err = barrier.CallWithDB(db, func(tx *sql.Tx) error {
 		// 更新产品库存
-		result, err := l.svcCtx.ProductModel.TxAdjustStock(tx, in.Id, -1)
+		result, err := l.svcCtx.ProductModel.TxAdjustStock(l.ctx, tx, in.Id, -1)
 		if err != nil {
 			return err
 		}

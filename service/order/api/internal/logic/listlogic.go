@@ -5,7 +5,7 @@ import (
 
 	"mall/service/order/api/internal/svc"
 	"mall/service/order/api/internal/types"
-	"mall/service/order/rpc/orderclient"
+	"mall/service/order/rpc/types/order"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -16,16 +16,16 @@ type ListLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-func NewListLogic(ctx context.Context, svcCtx *svc.ServiceContext) ListLogic {
-	return ListLogic{
+func NewListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListLogic {
+	return &ListLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *ListLogic) List(req types.ListRequest) (resp []*types.ListResponse, err error) {
-	res, err := l.svcCtx.OrderRpc.List(l.ctx, &orderclient.ListRequest{
+func (l *ListLogic) List(req *types.ListRequest) (resp []*types.ListResponse, err error) {
+	res, err := l.svcCtx.OrderRpc.List(l.ctx, &order.ListRequest{
 		Uid: req.Uid,
 	})
 	if err != nil {

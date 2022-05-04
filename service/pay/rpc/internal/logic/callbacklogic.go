@@ -3,11 +3,11 @@ package logic
 import (
 	"context"
 
-	"mall/service/order/rpc/order"
+	"mall/service/order/rpc/types/order"
 	"mall/service/pay/model"
 	"mall/service/pay/rpc/internal/svc"
-	"mall/service/pay/rpc/pay"
-	"mall/service/user/rpc/user"
+	"mall/service/pay/rpc/types/pay"
+	"mall/service/user/rpc/types/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
@@ -45,7 +45,7 @@ func (l *CallbackLogic) Callback(in *pay.CallbackRequest) (*pay.CallbackResponse
 	}
 
 	// 查询支付是否存在
-	res, err := l.svcCtx.PayModel.FindOne(in.Id)
+	res, err := l.svcCtx.PayModel.FindOne(l.ctx, in.Id)
 	if err != nil {
 		if err == model.ErrNotFound {
 			return nil, status.Error(100, "支付不存在")
@@ -60,7 +60,7 @@ func (l *CallbackLogic) Callback(in *pay.CallbackRequest) (*pay.CallbackResponse
 	res.Source = in.Source
 	res.Status = in.Status
 
-	err = l.svcCtx.PayModel.Update(res)
+	err = l.svcCtx.PayModel.Update(l.ctx, res)
 	if err != nil {
 		return nil, status.Error(500, err.Error())
 	}

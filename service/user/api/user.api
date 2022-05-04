@@ -37,10 +37,10 @@ type (
 
 service User {
 	@handler Login
-	post /api/user/login(LoginRequest) returns (LoginResponse)
+	post /api/user/login (LoginRequest) returns (LoginResponse)
 	
 	@handler Register
-	post /api/user/register(RegisterRequest) returns (RegisterResponse)
+	post /api/user/register (RegisterRequest) returns (RegisterResponse)
 }
 
 @server(
@@ -48,5 +48,5 @@ service User {
 )
 service User {
 	@handler UserInfo
-	post /api/user/userinfo() returns (UserInfoResponse)
+	post /api/user/userinfo () returns (UserInfoResponse)
 }

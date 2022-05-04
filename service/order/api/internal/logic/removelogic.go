@@ -5,7 +5,7 @@ import (
 
 	"mall/service/order/api/internal/svc"
 	"mall/service/order/api/internal/types"
-	"mall/service/order/rpc/orderclient"
+	"mall/service/order/rpc/types/order"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -16,16 +16,16 @@ type RemoveLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-func NewRemoveLogic(ctx context.Context, svcCtx *svc.ServiceContext) RemoveLogic {
-	return RemoveLogic{
+func NewRemoveLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RemoveLogic {
+	return &RemoveLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *RemoveLogic) Remove(req types.RemoveRequest) (resp *types.RemoveResponse, err error) {
-	_, err = l.svcCtx.OrderRpc.Remove(l.ctx, &orderclient.RemoveRequest{
+func (l *RemoveLogic) Remove(req *types.RemoveRequest) (resp *types.RemoveResponse, err error) {
+	_, err = l.svcCtx.OrderRpc.Remove(l.ctx, &order.RemoveRequest{
 		Id: req.Id,
 	})
 	if err != nil {

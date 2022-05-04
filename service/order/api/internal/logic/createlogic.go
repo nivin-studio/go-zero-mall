@@ -5,7 +5,7 @@ import (
 
 	"mall/service/order/api/internal/svc"
 	"mall/service/order/api/internal/types"
-	"mall/service/order/rpc/order"
+	"mall/service/order/rpc/types/order"
 	"mall/service/product/rpc/product"
 
 	"github.com/dtm-labs/dtmgrpc"
@@ -19,15 +19,15 @@ type CreateLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic {
-	return CreateLogic{
+func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogic {
+	return &CreateLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *CreateLogic) Create(req types.CreateRequest) (resp *types.CreateResponse, err error) {
+func (l *CreateLogic) Create(req *types.CreateRequest) (resp *types.CreateResponse, err error) {
 	// 获取 OrderRpc BuildTarget
 	orderRpcBusiServer, err := l.svcCtx.Config.OrderRpc.BuildTarget()
 	if err != nil {
@@ -46,13 +46,13 @@ func (l *CreateLogic) Create(req types.CreateRequest) (resp *types.CreateRespons
 	gid := dtmgrpc.MustGenGid(dtmServer)
 	// 创建一个saga协议的事务
 	saga := dtmgrpc.NewSagaGrpc(dtmServer, gid).
-		Add(orderRpcBusiServer+"/orderclient.Order/Create", orderRpcBusiServer+"/orderclient.Order/CreateRevert", &order.CreateRequest{
+		Add(orderRpcBusiServer+"/order.Order/Create", orderRpcBusiServer+"/order.Order/CreateRevert", &order.CreateRequest{
 			Uid:    req.Uid,
 			Pid:    req.Pid,
 			Amount: req.Amount,
 			Status: 0,
 		}).
-		Add(productRpcBusiServer+"/productclient.Product/DecrStock", productRpcBusiServer+"/productclient.Product/DecrStockRevert", &product.DecrStockRequest{
+		Add(productRpcBusiServer+"/product.Product/DecrStock", productRpcBusiServer+"/product.Product/DecrStockRevert", &product.DecrStockRequest{
 			Id:  req.Pid,
 			Num: 1,
 		})

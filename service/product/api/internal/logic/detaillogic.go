@@ -5,7 +5,7 @@ import (
 
 	"mall/service/product/api/internal/svc"
 	"mall/service/product/api/internal/types"
-	"mall/service/product/rpc/product"
+	"mall/service/product/rpc/types/product"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -16,15 +16,15 @@ type DetailLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-func NewDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) DetailLogic {
-	return DetailLogic{
+func NewDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DetailLogic {
+	return &DetailLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *DetailLogic) Detail(req types.DetailRequest) (resp *types.DetailResponse, err error) {
+func (l *DetailLogic) Detail(req *types.DetailRequest) (resp *types.DetailResponse, err error) {
 	res, err := l.svcCtx.ProductRpc.Detail(l.ctx, &product.DetailRequest{
 		Id: req.Id,
 	})

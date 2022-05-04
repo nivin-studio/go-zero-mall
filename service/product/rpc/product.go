@@ -7,7 +7,7 @@ import (
 	"mall/service/product/rpc/internal/config"
 	"mall/service/product/rpc/internal/server"
 	"mall/service/product/rpc/internal/svc"
-	"mall/service/product/rpc/product"
+	"mall/service/product/rpc/types/product"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -24,10 +24,10 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	ctx := svc.NewServiceContext(c)
-	srv := server.NewProductServer(ctx)
+	svr := server.NewProductServer(ctx)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		product.RegisterProductServer(grpcServer, srv)
+		product.RegisterProductServer(grpcServer, svr)
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)

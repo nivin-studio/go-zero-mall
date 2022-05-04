@@ -18,7 +18,7 @@ func UpdateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := logic.NewUpdateLogic(r.Context(), svcCtx)
-		resp, err := l.Update(req)
+		resp, err := l.Update(&req)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {

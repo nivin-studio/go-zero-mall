@@ -8,11 +8,12 @@ import (
 
 	"mall/service/pay/rpc/internal/logic"
 	"mall/service/pay/rpc/internal/svc"
-	"mall/service/pay/rpc/pay"
+	"mall/service/pay/rpc/types/pay"
 )
 
 type PayServer struct {
 	svcCtx *svc.ServiceContext
+	pay.UnimplementedPayServer
 }
 
 func NewPayServer(svcCtx *svc.ServiceContext) *PayServer {

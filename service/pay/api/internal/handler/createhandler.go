@@ -18,7 +18,7 @@ func CreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := logic.NewCreateLogic(r.Context(), svcCtx)
-		resp, err := l.Create(req)
+		resp, err := l.Create(&req)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {

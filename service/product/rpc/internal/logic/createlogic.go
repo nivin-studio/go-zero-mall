@@ -5,7 +5,7 @@ import (
 
 	"mall/service/product/model"
 	"mall/service/product/rpc/internal/svc"
-	"mall/service/product/rpc/product"
+	"mall/service/product/rpc/types/product"
 
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
@@ -34,7 +34,7 @@ func (l *CreateLogic) Create(in *product.CreateRequest) (*product.CreateResponse
 		Status: in.Status,
 	}
 
-	res, err := l.svcCtx.ProductModel.Insert(&newProduct)
+	res, err := l.svcCtx.ProductModel.Insert(l.ctx, &newProduct)
 	if err != nil {
 		return nil, status.Error(500, err.Error())
 	}

@@ -8,11 +8,12 @@ import (
 
 	"mall/service/product/rpc/internal/logic"
 	"mall/service/product/rpc/internal/svc"
-	"mall/service/product/rpc/product"
+	"mall/service/product/rpc/types/product"
 )
 
 type ProductServer struct {
 	svcCtx *svc.ServiceContext
+	product.UnimplementedProductServer
 }
 
 func NewProductServer(svcCtx *svc.ServiceContext) *ProductServer {

@@ -5,7 +5,7 @@ import (
 
 	"mall/service/product/model"
 	"mall/service/product/rpc/internal/svc"
-	"mall/service/product/rpc/product"
+	"mall/service/product/rpc/types/product"
 
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
@@ -27,7 +27,7 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 
 func (l *UpdateLogic) Update(in *product.UpdateRequest) (*product.UpdateResponse, error) {
 	// 查询产品是否存在
-	res, err := l.svcCtx.ProductModel.FindOne(in.Id)
+	res, err := l.svcCtx.ProductModel.FindOne(l.ctx, in.Id)
 	if err != nil {
 		if err == model.ErrNotFound {
 			return nil, status.Error(100, "产品不存在")
@@ -51,7 +51,7 @@ func (l *UpdateLogic) Update(in *product.UpdateRequest) (*product.UpdateResponse
 		res.Status = in.Status
 	}
 
-	err = l.svcCtx.ProductModel.Update(res)
+	err = l.svcCtx.ProductModel.Update(l.ctx, res)
 	if err != nil {
 		return nil, status.Error(500, err.Error())
 	}
